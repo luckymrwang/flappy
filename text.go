@@ -7,6 +7,8 @@ import (
 	ttf "github.com/veandco/go-sdl2/sdl_ttf"
 )
 
+var font *ttf.Font
+
 func drawTitle(r *sdl.Renderer) error {
 	r.Clear()
 
@@ -30,9 +32,13 @@ func drawTitle(r *sdl.Renderer) error {
 
 func drawText(renderer *sdl.Renderer, text string, rect *sdl.Rect, color sdl.Color) error {
 	path := "res/fonts/Flappy.ttf"
-	font, err := ttf.OpenFont(path, 30)
-	if err != nil {
-		return fmt.Errorf("could not load font: %v", err)
+	var err error
+
+	if font == nil {
+		font, err = ttf.OpenFont(path, 30)
+		if err != nil {
+			return fmt.Errorf("could not load font: %v", err)
+		}
 	}
 
 	surface, err := font.RenderUTF8_Solid(text, color)
